@@ -1,0 +1,29 @@
+{
+  "name": "mrow",
+  "version": "0.0.0",
+  "description": "Interface LSPD destinée au serveur LaLife.",
+  "author": "Antoine 'Gin' Coulon",
+  "private": false,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.16.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "~1.4.3",
+    "crypto": "^1.0.1",
+    "debug": "~2.6.0",
+    "express": "~4.14.1",
+    "express-session": "^1.15.6",
+    "hbs": "^4.0.2",
+    "memory": "0.0.3",
+    "morgan": "~1.7.0",
+    "mysql": "^2.16.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport.socketio": "^3.7.0",
+    "pug": "~2.0.0-beta10",
+    "serve-favicon": "~2.3.2",
+    "socket.io": "^2.2.0"
+  }
+}

@@ -1,0 +1,117 @@
+<header style="background-color: #155084">
+
+    <h1 style="font-size: 4em">M-ROW</h1>
+
+</header>
+
+
+<div id="signup_card" class="col-md-6 offset-md-3" style="margin-top: 20px; justify-content: center">
+
+    <div class="card">
+
+
+        <div class="card-header" style="text-align: center"> Inscription </div>
+
+        <div class="card-body" style="float: center">
+
+            <label>Clé d'inscription</label>
+
+            <div class="input-group mb-3">
+
+                <input type="text" class="form-control" placeholder="0000" style="text-align: center" maxlength="4" name="key1">
+
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="tiret1">-</span>
+                </div>
+
+                <input type="text" class="form-control" placeholder="AAAA" style="text-align: center" maxlength="4"name="key2">
+
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="tiret2">-</span>
+                </div>
+
+                <input type="text" class="form-control" placeholder="0000" style="text-align: center" maxlength="4" name="key3">
+
+            </div>
+
+            <small class="form-text text-muted">Clé unique d'inscription communiquée par un haut-gradé</small>
+
+            <br />
+
+            <label>Matricule</label>
+
+            <div class="input-group mb-3">
+
+                <input type="number" class="form-control" placeholder="00" maxlength="2"name="matricule">
+
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" onclick="verifyMatricule()">Vérifier la
+                        disponibilité</button>
+                </div>
+
+                <script>
+
+                    function verifyMatricule() {
+                        $.get("/signup", function(data) {
+                                alert(data.key1+'-'+data.key2+'-'+data.key3);
+                            });
+                    }
+
+                </script>
+
+            </div>
+
+            <small class="form-text text-muted">le matricule doit être un nombre de 01 à 99</small>
+
+            <br />
+
+            <label>Informations personelles</label>
+
+            <div class="input-group mb-3">
+
+                <input type="text" class="form-control" placeholder="Nom">
+
+                <input type="text" class="form-control" placeholder="Prénom">
+
+            </div>
+
+            <br />
+
+            <label for="inputPassword5">Mot de passe</label>
+
+            <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+
+            <small id="passwordHelpBlock" class="form-text text-muted">
+                Le mot de passe doit faire entre 8 et 20 caractères.
+            </small>
+
+            <br />
+
+            <label for="inputPassword5">Confirmation du mot de passe</label>
+
+            <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+
+            <br />
+
+            <div class="custom-control custom-switch">
+
+                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+
+                <label class="custom-control-label" for="customSwitch1">Oui, j'ai lu <a href="">le réglement intérieur
+                        du
+                        LSPD</a></label>
+
+            </div>
+
+            <br />
+
+            <button type="button" class="btn btn-primary">S'inscrire</button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<br />

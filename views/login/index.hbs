@@ -1,0 +1,57 @@
+<header style="background-color: #155084">
+
+  <h1 style="font-size: 4em">M-ROW</h1>
+
+</header>
+
+
+<div id="signup_card" class="col-md-6 offset-md-3" style="margin-top: 20px; justify-content: center">
+
+  <div class="card">
+
+
+    <div class="card-header" style="text-align: center"> Connexion </div>
+
+    <div class="card-body" style="float: center">
+
+
+        {{#if message}}
+
+        <div class="alert alert-warning" role="alert">
+          {{message}}
+        </div>
+
+        {{/if}}
+
+
+      <form class="form-signin" method="post" action="/signin">
+        <div class="form-group">
+          <label for="username">Matricule</label>
+
+          <input type="text" class="form-control" name="matricule" placeholder="00">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" class="form-control" name="password" placeholder="Mot de passe">
+        </div>
+
+        <div class="custom-control custom-switch">
+
+          <input type="checkbox" class="custom-control-input" id="customSwitch1">
+
+          <label class="custom-control-label" for="customSwitch1">Se souvenir de moi</a></label>
+
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-primary">Se connecter</button>
+      </form>
+
+
+    </div>
+
+  </div>
+
+</div>
