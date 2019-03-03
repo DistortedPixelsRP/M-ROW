@@ -17,7 +17,6 @@ router.get('/newkey', isAuthenticated, function (req, res, next) {
     res.send({ key1: key1, key2: key2, key3: key3 });
   });
 
-
 });
 
 
@@ -26,7 +25,6 @@ function isAuthenticated(req, res, next) {
   if (req.session.user)
     return next();
 
-  // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SIGNIN PAGE
   res.redirect('/signin');
 }
 
