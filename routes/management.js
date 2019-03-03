@@ -10,14 +10,19 @@ router.get('/', isAuthenticated, function(req, res, next) {
 
 });
 
-router.get('/newkey', isAuthenticated, function(req, res, next) {
+router.get('/newkeyasked', isAuthenticated, function(req, res, next) {
 
     var rank  = req.session.user.rank;
 
     if(rank>5) {
+      console.log("rang ok");
         newUserKey(function (key1, key2, key3) {
             res.send({key1: key1, key2: key2, key3: key3});
+        
         });
+    }
+    else {
+      console.log("rang trop bas");
     }
 
 });
@@ -71,7 +76,7 @@ function randomString(len, an) {
   
         console.log("¤ SQL : Nouvelle clef utilisateur créée");
   
-        cb(key1, key2, key3)
+        cb(key1, key2, key3);
   
         });
   
