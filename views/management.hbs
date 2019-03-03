@@ -185,16 +185,9 @@
 
                 <div class="card-body" style="float: center">
 
-                    <button type="button" id="btn" class="btn btn-primary btn-lg btn-block" onclick="newKey()">Générer une clé
+                    <button type="button" id="btn" class="btn btn-primary btn-lg btn-block" onclick="newKey()">Générer
+                        une clé
                         d'inscription</button>
-
-                    <script>
-                        function newKey() {
-                            $.get("/management/newkeyasked", function(data) {
-                                $("#btn").after("<div class='alert alert-primary' role='alert'>Nouvelle clef : "+data.key1+"-"+data.key2+"-"+data.key3+"</div>");
-                            });
-                        }
-                    </script>
 
                 </div>
 
