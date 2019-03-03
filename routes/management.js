@@ -3,11 +3,21 @@ var router = express.Router();
 var connection = require('../lib/dbconn');
 
 
+var Handlebars = require('hbs');
+var fs = require('fs');
 /* GET user information after login */
 
 router.get('/', isAuthenticated, function (req, res, next) {
 
-  res.render('management');
+
+  getUsers(function(rows){
+
+    var template = fs.readFileSync('views/agents.hbs', 'utf8');
+    Handlebars.registerPartial('agentsTable', template);
+
+    res.render('management', {agents:rows});
+
+  });
 
 });
 
@@ -28,6 +38,16 @@ function isAuthenticated(req, res, next) {
   res.redirect('/signin');
 }
 
+
+function getUsers(cb){
+  var sql = "SELECT * FROM users INNER JOIN ranks ON users.rank=ranks.id";
+  connection.query(sql, function (err, result) {
+
+      if (err) throw err;
+      cb(result);
+
+  });
+}
 
 
 

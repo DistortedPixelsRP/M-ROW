@@ -1,0 +1,27 @@
+<table class="table">
+
+    <thead class="thead-dark">
+
+        <tr>
+            <th scope="col">Matricule</th>
+            <th scope="col">Rang</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {{#each agents}}
+        <tr>
+            <th>{{matricule}}</th>
+            <th>{{rank_name}}</th>
+            <th>{{last_name}}</th>
+            <th>{{first_name}}</th>
+        </tr>
+        {{/each}}
+
+    </tbody>
+
+</table>
