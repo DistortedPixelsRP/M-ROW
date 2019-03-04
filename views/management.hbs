@@ -33,7 +33,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="#">Casiers judiciaires</a>
                         <a class="dropdown-item" href="#">Plaintes</a>
-                        <a class="dropdown-item" href="#">Annuaire</a>
+                        <a class="dropdown-item" href="/database/directory">Annuaire</a>
                         <a class="dropdown-item" href="#">Véhicules répertoriés</a>
                     </div>
 
@@ -147,9 +147,11 @@
 
                 <div class="card-body" style="float: center">
 
-                    <button type="button" id="btn" class="btn btn-primary btn-lg btn-block" onclick="newKey()">Générer
+                    <button type="button" id="btnNewKey" class="btn btn-primary btn-lg btn-block" onclick="newKey()">Générer
                         une clé
                         d'inscription</button>
+
+                    <button type="button" id="btnRemoveKeys" class="btn btn-secondary btn-lg btn-block" onclick="removeKeys()">Supprimer les clefs existantes</button>
 
                 </div>
 
@@ -163,4 +165,3 @@
     </div>
 
 </div>
-

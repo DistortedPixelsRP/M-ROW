@@ -10,13 +10,12 @@ router.get('/', isAuthenticated, function (req, res, next) {
 });
 
 
-router.get('/checkmatricule', function (req, res, next) {
-    if (availableMatricule(matricule)) {
-        return true;
-    }
-    else {
-        return false;
-    }
+router.get('/checkmatricule/:matricule', function (req, res, next) {
+    console.log(req.params.matricule);
+    checkMatricule(req.params.matricule, function (result) {
+        console.log(result);
+        res.send({ result : result });
+    });
 });
 
 
@@ -25,75 +24,125 @@ function isAuthenticated(req, res, next) {
     if (!req.session.user)
         return next();
 
-    // IF A USER IS LOGGED IN, THEN REDIRECT THEM TO DASHBOARD
     res.redirect('/dashboard');
 }
 
-module.exports = router;
 
-function availableMatricule(matricule) {
 
-    var sql = "SELECT count(*) AS number FROM users WHERE matricule = '" + matricule + "' ";
 
-    con.query(sql, function (err, result) {
+
+
+
+// Function signing an user up in the database
+
+function addUser(key1, key2, key3, matricule, password, lastName, firstName, callback) {
+
+    checkKey(key1, key2, key3, function (isValid) {
+
+        if (isValid) {
+
+            let passwordHashed = password;
+
+            var sql = "INSERT INTO users (matricule, password, last_name, first_name) VALUES ('" + matricule + "', '" + passwordHashed + "', '" + lastName + "', '" + firstName + "')";
+
+            connection.query(sql, function (err, result) {
+
+                if (err) throw err;
+
+                removeKey(key1, key2, key3);
+
+                callback(true);
+
+            });
+
+        }
+        else {
+
+            callback(false);
+
+        }
+
+    });
+
+}
+
+
+
+
+
+
+
+// Function checking is a key exists in the database
+
+function checkKey(key1, key2, key3, callback) {
+
+
+    var sql = "SELECT count(*) AS number FROM signup_keys WHERE key1 = '" + key1 + "' AND key2 = '" + key2 + "' AND key3 = '" + key3 + "'";
+
+    connection.query(sql, function (err, result) {
 
         if (err) throw err;
 
         if (result['number'] > 0) {
 
-            return false;
-        }
-        else {
-            
-            return true;
+            callback(true);
         }
 
+        else {
+
+            callback(false);
+
+        }
 
     });
 
 }
 
-function validKey(key1, key2, key3) {
 
 
-    var sql = "SELECT count(*) AS number FROM users WHERE key1 = '" + key1 + "' AND key2 = '" + key2 + "' AND key3 = '" + key3 + "' AND registered='1' ";
 
-    con.query(sql, function (err, result) {
+// Function checking if a matricule is already used
+
+function checkMatricule(matricule, callback) {
+
+    var sql = "SELECT count(*) AS number FROM users WHERE matricule = '" + matricule + "' ";
+
+    connection.query(sql, function (err, result) {
 
         if (err) throw err;
 
-        if (result['number'] == 1) {
+        /*if (result['number'] > 0) {
 
-            return true;
+            callback(false);
         }
+
         else {
-            return false;
-        }
+
+            callback(true);
+        }*/
+
+        console.log(result);
+
 
     });
 
 }
 
+// Function removing a key from the database
 
-function signUp(key1, key2, key3, matricule, password, last_name, first_name) {
+function removeKey(key1, key2, key3) {
 
-    con.connect(function (err) {
+    var sql = "DELETE FROM signup_keys WHERE key1 = '" + key1 + "' AND key2 = '" + key2 + "' AND key3 = '" + key3 + "'";
+
+    connection.query(sql, function (err, result) {
 
         if (err) throw err;
 
-        var sql = "UPDATE users SET registered='1', matricule ='" + matricule + "', password='" + password + "', last_name='" + last_name + "', first_name='" + first_name + "' WHERE key1 = '" + key1 + "' AND key2 = '" + key2 + "' AND key3 = '" + key3 + "' ";
-
-        con.query(sql, function (err, result) {
-
-            if (err) throw err;
-
-            console.log(result.affectedRows + " record(s) updated");
-
-        });
-
     });
 
 }
+
+
 
 
 module.exports = router;

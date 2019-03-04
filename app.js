@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var dashboard = require('./routes/dashboard');
 var management = require('./routes/management');
 var signup = require('./routes/signup');
+var database = require('./routes/database');
 
 var app = express();
 
@@ -54,6 +55,7 @@ app.use('/users', users);
 app.use('/dashboard', dashboard);
 app.use('/management', management);
 app.use('/signup', signup);
+app.use('/database', database);
 
 //passport Strategy -- the express session middleware before calling passport.session()
 passport.use('local', new LocalStrategy({
@@ -93,13 +95,13 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
-app.get('/signin', function (req, res) {
+app.get('/login', function (req, res) {
   res.render('login/index', { 'message': req.flash('message') });
 });
 
-app.post("/signin", passport.authenticate('local', {
+app.post("/login", passport.authenticate('local', {
   successRedirect: '/management',
-  failureRedirect: '/signin',
+  failureRedirect: '/login',
   failureFlash: true
 }), function (req, res, info) {
   res.render('login/index', { 'message': req.flash('message') });
@@ -108,7 +110,7 @@ app.post("/signin", passport.authenticate('local', {
 app.get('/logout', function (req, res) {
   req.session.destroy();
   req.logout();
-  res.redirect('/signin');
+  res.redirect('/login');
 });
 
 // catch 404 and forward to error handler

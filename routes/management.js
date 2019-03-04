@@ -1,11 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var connection = require('../lib/dbconn');
-
-
 var Handlebars = require('hbs');
 var fs = require('fs');
-/* GET user information after login */
+
 
 router.get('/', isAuthenticated, function (req, res, next) {
 
@@ -29,18 +27,26 @@ router.get('/newkey', isAuthenticated, function (req, res, next) {
 
 });
 
+router.get('/removeKeys', isAuthenticated, function (req, res, next) {
+
+  removeAllKeys(function (result) {
+    res.send({ affectedRows: result });
+  });
+
+});
+
 
 
 function isAuthenticated(req, res, next) {
   if (req.session.user)
     return next();
 
-  res.redirect('/signin');
+  res.redirect('/login');
 }
 
 
 function getUsers(cb){
-  var sql = "SELECT * FROM users INNER JOIN ranks ON users.rank=ranks.id";
+  var sql = "SELECT * FROM users INNER JOIN ranks ON users.rank=ranks.id ORDER BY rank DESC";
   connection.query(sql, function (err, result) {
 
       if (err) throw err;
@@ -57,7 +63,7 @@ function getUsers(cb){
 
 
 
-// Function  creating a random string
+// Function creating a random string
 
 function randomString(len, an) {
 
@@ -106,114 +112,29 @@ function createKey(callback) {
 
 
 
-// Function removing a key from the database
+// Function removing all keys from the database
 
-function removeKey(key1, key2, key3, callback) {
+function removeAllKeys(callback) {
 
-  var sql = "DELETE FROM signup_keys WHERE key1 = '" + key1 + "' AND key2 = '" + key2 + "' AND key3 = '" + key3 + "'";
-
-  connection.query(sql, function (err, result) {
-
-      if (err) throw err;
-
-  });
-
-}
-
-
-
-
-// Function signing an user up in the database
-
-function addUser(key1, key2, key3, matricule, password, lastName, firstName, callback) {
-
-  checkKey(key1, key2, key3, function(isValid) {
-
-      if(isValid) {
-
-          let passwordHashed = bcrypt.hashSync(password);
-
-          var sql = "INSERT INTO users (matricule, password, last_name, first_name) VALUES ('" + matricule + "', '" + passwordHashed + "', '" + lastName + "', '" + firstName + "')";
-
-          connection.query(sql, function (err, result) {
-
-              if (err) throw err;
-
-              removeKey(key1, key2, key3);
-
-              callback(true);
-
-          });
-
-      }
-      else {
-
-          callback(false);
-
-      }
-
-  });
-
-}
-
-
-
-
-
-// Function checking is a key exists in the database
-
-function checkKey(key1, key2, key3, callback) {
-
-
-  var sql = "SELECT count(*) AS number FROM signup_keys WHERE key1 = '" + key1 + "' AND key2 = '" + key2 + "' AND key3 = '" + key3 + "'";
+  var sql = "DELETE FROM signup_keys";
 
   connection.query(sql, function (err, result) {
 
       if (err) throw err;
 
-      if (result['number'] > 0) {
-
-          callback(true);
-      }
-
-      else {
-
-          callback(false);
-
-      }
+      callback(result.affectedRows);
 
   });
 
 }
 
-
-
-
-// Function checking if a matricule is already used
-
-function checkMatricule(matricule, callback) {
-
-  var sql = "SELECT count(*) AS number FROM users WHERE matricule = '" + matricule + "' ";
-
-  connection.query(sql, function (err, result) {
-
-      if (err) throw err;
-
-      if (result['number'] > 0) {
-
-          callback(false);
-      }
-
-      else {
-
-          callback(true);
-      }
-
-
-  });
-
-}
 
 module.exports = router;
 
+
+/*removeAllKeys(function (result){
+
+  console.log(result);
+
+});*/
 

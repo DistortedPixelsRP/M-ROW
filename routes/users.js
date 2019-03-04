@@ -18,7 +18,7 @@ function isAuthenticated(req, res, next) {
       return next();
 
   // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SIGNIN PAGE
-  res.redirect('/signin');
+  res.redirect('/login');
 }
 
 module.exports = router;
