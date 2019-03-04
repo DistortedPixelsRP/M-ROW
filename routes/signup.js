@@ -4,11 +4,46 @@ var connection = require('../lib/dbconn');
 
 /* GET user information after login */
 
-router.get('/', isAuthenticated, function (req, res, next) {
+router.get('/', isNotAuthenticated, function (req, res, next) {
 
     res.render('signup');
 
 });
+
+
+router.post('/', isNotAuthenticated, function (req, res, next) {
+
+    /*
+    
+    Voici le format des données reçues:
+
+    { 
+        key1: '1233',
+        key2: '4521',
+        key3: '5465',
+        matricule: '11',
+        nom: 'sdf',
+        prenom: 'sdf',
+        password: 'sdf',
+        password_confirm: 'sdf',
+        accepted_rules: 'on' 
+    }
+
+    Par exemple, pour récup la key1, écrire : 
+
+    req.body.key1
+
+    */
+
+    // Etape 1 : Check les données
+
+    // Etape 2 : Inscrire le client
+
+    // Etape 3 : Afficher le resultat
+    res.render('signup');
+
+});
+
 
 
 router.get('/checkmatricule/:matricule', function (req, res, next) {
@@ -20,11 +55,19 @@ router.get('/checkmatricule/:matricule', function (req, res, next) {
 
 
 function isAuthenticated(req, res, next) {
+    if (req.session.user)
+        return next();
+
+    res.redirect('/dashboard');
+}
+
+function isNotAuthenticated(req, res, next) {
     if (!req.session.user)
         return next();
 
     res.redirect('/dashboard');
 }
+
 
 
 
