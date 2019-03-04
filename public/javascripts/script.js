@@ -21,12 +21,18 @@ function removeKeys() {
 
 function verifyMatricule(matricule) {
     $.get("/signup/checkmatricule/"+matricule, function (data) {
-        if(data){
-            $('#matriculeButton').after('<div class="alert alert-primary" role="alert">Ce matricule est disponible !</div>');
+        if(data.result){
+            $("#disponibilite").html("Ce matricule est disponible !");
+            $("#disponibilite").addClass("alert-primary");
+            $("#disponibilite").removeClass("alert-warning");
         }
         else {
-            $('#matriculeButton').after('<div class="alert alert-warning" role="alert">Ce matricule est indisponible !</div>');
+            $("#disponibilite").html("Ce matricule est indisponible !");
+            $("#disponibilite").removeClass("alert-primary");
+            $("#disponibilite").addClass("alert-warning");
         }
+
+        $("#disponibilite").fadeIn();
     });
 }
 

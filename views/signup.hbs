@@ -42,12 +42,13 @@
 
             <div class="input-group mb-3">
 
-                <input type="text" class="form-control" placeholder="00" maxlength="2" id="matricule">
+                <input type="number" class="form-control" placeholder="00" maxlength="2" id="matricule">
 
                 <div class="input-group-append" id="matriculeButton">
                     <button class="btn btn-outline-secondary" type="button" onclick="verifyMatricule($('#matricule').val())">Vérifier la
                         disponibilité</button>
                 </div>
+                <div class="alert" role="alert" id="disponibilite" style="display: none"></div>
 
             </div>
 

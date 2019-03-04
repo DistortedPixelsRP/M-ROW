@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var connection = require('../lib/dbconn');
 
 /* GET user information after login */
 
@@ -11,9 +12,7 @@ router.get('/', isAuthenticated, function (req, res, next) {
 
 
 router.get('/checkmatricule/:matricule', function (req, res, next) {
-    console.log(req.params.matricule);
     checkMatricule(req.params.matricule, function (result) {
-        console.log(result);
         res.send({ result : result });
     });
 });
@@ -111,7 +110,7 @@ function checkMatricule(matricule, callback) {
 
         if (err) throw err;
 
-        /*if (result['number'] > 0) {
+        if (parseInt(result[0]['number']) > 0) {
 
             callback(false);
         }
@@ -119,9 +118,7 @@ function checkMatricule(matricule, callback) {
         else {
 
             callback(true);
-        }*/
-
-        console.log(result);
+        }
 
 
     });
