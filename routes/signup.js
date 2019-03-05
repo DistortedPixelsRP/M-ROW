@@ -3,7 +3,8 @@ var router = express.Router();
 var connection = require('../lib/dbconn');
 var crypto = require('crypto');
 
-/* GET user information after login */
+
+
 
 router.get('/', isNotAuthenticated, function (req, res, next) {
 
@@ -12,90 +13,131 @@ router.get('/', isNotAuthenticated, function (req, res, next) {
 });
 
 
+router.get('/checkmatricule/:matricule', function (req, res, next) {
+
+    checkMatricule(req.params.matricule, function (result) {
+
+        res.send({ result: result });
+
+    });
+    
+});
+
+
 router.post('/', isNotAuthenticated, function (req, res, next) {
 
     var key1 = req.body.key1;
+
     var key2 = req.body.key2;
+
     var key3 = req.body.key3;
+
     var matricule = req.body.matricule;
+
     var last_name = req.body.last_name;
+
     var first_name = req.body.first_name;
+
     var password = req.body.password;
+
     var password_confirm = req.body.password_confirm;
+
     var accepted_rules = req.body.accepted_rules;
 
-    checkKey(key1, key2, key3, function (valid) {
+    if (key1 && key2 && key3 && matricule && last_name && first_name && password && password_confirm) {
 
-        if (valid) {
+        if (accepted_rules) {
 
-            checkMatricule(matricule, function (available) {
+            checkKey(key1, key2, key3, function (valid) {
 
-                if (available) {
+                if (valid) {
 
-                    if (password == password_confirm && password.length >= 8 && password.length <= 20) {
+                    if (!isNaN(matricule) && matricule.length == 2) {
 
-                        var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
-                        var pwd = salt + '' + password;
-                        var encPassword = crypto.createHash('sha1').update(pwd).digest('hex');
-                        addUser(key1, key2, key3, matricule, encPassword, last_name, first_name, function (signup) {
-                            res.redirect('/login');
+                        checkMatricule(matricule, function (available) {
+
+                            if (available) {
+
+                                if (password == password_confirm && password.length >= 8 && password.length <= 20) {
+
+                                    var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
+
+                                    var pwd = salt + '' + password;
+
+                                    var encPassword = crypto.createHash('sha1').update(pwd).digest('hex');
+
+                                    addUser(key1, key2, key3, matricule, encPassword, last_name, first_name, function (signup) {
+
+                                        res.redirect('/login');
+
+                                    });
+                                }
+
+                                else {
+
+                                    res.render('signup', { error: true, errorMsg: "Les mots de passe ne correspondent pas ou ne sont pas valides." });
+                                }
+
+                            }
+
+                            else {
+
+                                res.render('signup', { error: true, errorMsg: "Le matricule n'est pas disponible." });
+                            }
+
                         });
+
                     }
-                    else{
-                        res.render('signup', {error:true, errorMsg:"Les mots de passe ne correspondent pas"});
+
+                    else {
+
+                        res.render('signup', { error: true, errorMsg: "Le matricule n'est pas valide." });
                     }
+
                 }
-                else{
-                    res.render('signup', {error:true, errorMsg:"Le matricule n'est pas disponible"});
+
+                else {
+
+                    res.render('signup', { error: true, errorMsg: "La clef n'existe pas." });
                 }
 
             });
-        }
-        else{
-            res.render('signup', {error:true, errorMsg:"La clé n'existe pas"});
+
         }
 
-    });
+        else {
 
+            res.render('signup', { error: true, errorMsg: "Veuillez accepter le réglement interieur" });
+        }
 
+    }
 
-    // Etape 1 : Check les données
+    else {
 
-    // Etape 2 : Inscrire le client
-
-    // Etape 3 : Afficher le resultat
+        res.render('signup', { error: true, errorMsg: "Veuillez remplir tous les champs." });
+    }
 
 });
-
-
-
-router.get('/checkmatricule/:matricule', function (req, res, next) {
-    checkMatricule(req.params.matricule, function (result) {
-        res.send({ result: result });
-    });
-});
-
 
 
 function isAuthenticated(req, res, next) {
+
     if (req.session.user)
+
         return next();
 
     res.redirect('/dashboard');
+
 }
 
 function isNotAuthenticated(req, res, next) {
+
     if (!req.session.user)
+
         return next();
 
     res.redirect('/dashboard');
 }
-
-
-
-
-
-
 
 
 // Function signing an user up in the database
@@ -117,11 +159,6 @@ function addUser(key1, key2, key3, matricule, password, lastName, firstName, cal
     });
 
 }
-
-
-
-
-
 
 
 // Function checking is a key exists in the database
@@ -151,8 +188,6 @@ function checkKey(key1, key2, key3, callback) {
 }
 
 
-
-
 // Function checking if a matricule is already used
 
 function checkMatricule(matricule, callback) {
@@ -173,10 +208,10 @@ function checkMatricule(matricule, callback) {
             callback(true);
         }
 
-
     });
 
 }
+
 
 // Function removing a key from the database
 
@@ -196,5 +231,3 @@ function removeKey(key1, key2, key3) {
 
 
 module.exports = router;
-
-

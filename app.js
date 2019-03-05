@@ -99,7 +99,7 @@ app.get('/login', function (req, res) {
 });
 
 app.post("/login", passport.authenticate('local', {
-  successRedirect: '/management',
+  successRedirect: '/dashboard',
   failureRedirect: '/login',
   failureFlash: true
 }), function (req, res, info) {

@@ -5,12 +5,13 @@ var Handlebars = require('hbs');
 var fs = require('fs');
 
 
-router.get('/', isAuthenticated, function (req, res, next) {
 
+router.get('/', isAuthenticated, function (req, res, next) {
 
   getUsers(function(rows){
 
     var template = fs.readFileSync('views/agents.hbs', 'utf8');
+
     Handlebars.registerPartial('agentsTable', template);
 
     res.render('management', {agents:rows});
@@ -19,49 +20,53 @@ router.get('/', isAuthenticated, function (req, res, next) {
 
 });
 
+
 router.get('/newkey', isAuthenticated, function (req, res, next) {
 
   createKey(function (key1, key2, key3) {
+
     res.send({ key1: key1, key2: key2, key3: key3 });
+
   });
 
 });
+
 
 router.get('/removeKeys', isAuthenticated, function (req, res, next) {
 
   removeAllKeys(function (result) {
+
     res.send({ affectedRows: result });
+
   });
 
 });
 
 
-
 function isAuthenticated(req, res, next) {
+
   if (req.session.user)
+
     return next();
 
   res.redirect('/login');
+
 }
 
 
 function getUsers(cb){
+
   var sql = "SELECT * FROM users INNER JOIN ranks ON users.rank=ranks.id ORDER BY rank DESC";
+
   connection.query(sql, function (err, result) {
 
       if (err) throw err;
+
       cb(result);
 
   });
+
 }
-
-
-
-
-
-
-
-
 
 // Function creating a random string
 
@@ -82,8 +87,6 @@ function randomString(len, an) {
   return str;
 
 }
-
-
 
 
 // Function creating and storing a random signup key to the database
@@ -129,12 +132,5 @@ function removeAllKeys(callback) {
 }
 
 
+
 module.exports = router;
-
-
-/*removeAllKeys(function (result){
-
-  console.log(result);
-
-});*/
-
