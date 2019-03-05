@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 var dashboard = require('./routes/dashboard');
@@ -18,6 +20,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+
 //login script from here
 
 var flash = require('connect-flash');
@@ -30,14 +33,27 @@ var connection = require('./lib/dbconn');
 var sess = require('express-session');
 var Store = require('express-session').Store
 var BetterMemoryStore = require(__dirname + '/memory')
-var store = new BetterMemoryStore({ expires: 60 * 60 * 1000, debug: true })
-app.use(sess({
+var store = new BetterMemoryStore({ expires: 60 * 60 * 1000, debug: true });
+
+var sessionMiddleware = sess({
   name: 'JSESSION',
   secret: 'MYSECRETISVERYSECRET',
   store: store,
   resave: true,
   saveUninitialized: true
-}));
+});
+
+app.use(sessionMiddleware);
+
+
+// socket io 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+io.use(function(socket, next){
+  sessionMiddleware(socket.request, {}, next);
+});
+
+server.listen(8000);
 
 // uncomment after placing your favicon in /public
 app.use(logger('dev'));
@@ -129,5 +145,27 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// Gestion du temps réel
+
+io.on('connection', function (socket) {
+  var isConnected = false;
+  if(socket.request.session.user){
+    isConnected = true;
+  }
+
+  socket.on("alert-level", function(data){
+    if(isConnected){
+      console.log("Le niveau d'alerte passe à: "+data);
+      io.sockets.emit('alert-level', data);
+    }
+    else{
+      console.log("not connected");
+    }
+  });
+
+
+});
+
 
 module.exports = app;
