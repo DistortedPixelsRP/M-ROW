@@ -16,6 +16,10 @@
 
             <div class="alert" role="alert" id="alert" style="display: none"></div><br />
 
+            {{#if error}}
+                <div class="alert alert-warning" role="alert">{{errorMsg}}</div>
+            {{/if}}
+
             <form action="/signup" method="POST">
             
             <label>Clé d'inscription</label>
@@ -91,7 +95,7 @@
 
                 <input type="checkbox" class="custom-control-input" id="accepted_rules" name="accepted_rules">
 
-                <label class="custom-control-label" for="customSwitch1">Oui, j'ai lu <a href="">le réglement intérieur
+                <label class="custom-control-label" for="accepted_rules">Oui, j'ai lu <a href="">le réglement intérieur
                         du
                         LSPD</a></label>
 

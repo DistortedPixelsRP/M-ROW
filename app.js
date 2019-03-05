@@ -63,7 +63,6 @@ passport.use('local', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true //passback entire req to call back
 }, function (req, matricule, password, done) {
-  console.log(matricule + ' = ' + password);
   if (!matricule || !password) { return done(null, false, req.flash('message', 'Tous les champs ne sont pas remplis')); }
   var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
   connection.query("select * from users where matricule = ?", [matricule], function (err, rows) {

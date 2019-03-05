@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var connection = require('../lib/dbconn');
+var crypto = require('crypto');
 
 /* GET user information after login */
 
@@ -25,35 +26,33 @@ router.post('/', isNotAuthenticated, function (req, res, next) {
 
     checkKey(key1, key2, key3, function (valid) {
 
-        console.log("checkkey");
-
         if (valid) {
-
-            console.log("checkkey valid");
 
             checkMatricule(matricule, function (available) {
 
-                console.log("checkmatricule");
-
                 if (available) {
-
-                    console.log("checkmatricule valid");
-
-                    console.log(password);
-                    console.log(password_confirm);
 
                     if (password == password_confirm && password.length >= 8 && password.length <= 20) {
 
-                        console.log ("password valid");
-
-                        addUser(key1, key2, key3, matricule, password, last_name, first_name, function (signup) {
-                            console.log("utilisateur inscrit");
+                        var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
+                        var pwd = salt + '' + password;
+                        var encPassword = crypto.createHash('sha1').update(pwd).digest('hex');
+                        addUser(key1, key2, key3, matricule, encPassword, last_name, first_name, function (signup) {
+                            res.redirect('/login');
                         });
                     }
+                    else{
+                        res.render('signup', {error:true, errorMsg:"Les mots de passe ne correspondent pas"});
+                    }
+                }
+                else{
+                    res.render('signup', {error:true, errorMsg:"Le matricule n'est pas disponible"});
                 }
 
             });
-
+        }
+        else{
+            res.render('signup', {error:true, errorMsg:"La clé n'existe pas"});
         }
 
     });
@@ -65,7 +64,6 @@ router.post('/', isNotAuthenticated, function (req, res, next) {
     // Etape 2 : Inscrire le client
 
     // Etape 3 : Afficher le resultat
-    res.render('signup');
 
 });
 
