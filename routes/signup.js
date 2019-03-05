@@ -13,27 +13,52 @@ router.get('/', isNotAuthenticated, function (req, res, next) {
 
 router.post('/', isNotAuthenticated, function (req, res, next) {
 
-    /*
-    
-    Voici le format des données reçues:
+    var key1 = req.body.key1;
+    var key2 = req.body.key2;
+    var key3 = req.body.key3;
+    var matricule = req.body.matricule;
+    var last_name = req.body.last_name;
+    var first_name = req.body.first_name;
+    var password = req.body.password;
+    var password_confirm = req.body.password_confirm;
+    var accepted_rules = req.body.accepted_rules;
 
-    { 
-        key1: '1233',
-        key2: '4521',
-        key3: '5465',
-        matricule: '11',
-        nom: 'sdf',
-        prenom: 'sdf',
-        password: 'sdf',
-        password_confirm: 'sdf',
-        accepted_rules: 'on' 
-    }
+    checkKey(key1, key2, key3, function (valid) {
 
-    Par exemple, pour récup la key1, écrire : 
+        console.log("checkkey");
 
-    req.body.key1
+        if (valid) {
 
-    */
+            console.log("checkkey valid");
+
+            checkMatricule(matricule, function (available) {
+
+                console.log("checkmatricule");
+
+                if (available) {
+
+                    console.log("checkmatricule valid");
+
+                    console.log(password);
+                    console.log(password_confirm);
+
+                    if (password == password_confirm && password.length >= 8 && password.length <= 20) {
+
+                        console.log ("password valid");
+
+                        addUser(key1, key2, key3, matricule, password, last_name, first_name, function (signup) {
+                            console.log("utilisateur inscrit");
+                        });
+                    }
+                }
+
+            });
+
+        }
+
+    });
+
+
 
     // Etape 1 : Check les données
 
@@ -48,7 +73,7 @@ router.post('/', isNotAuthenticated, function (req, res, next) {
 
 router.get('/checkmatricule/:matricule', function (req, res, next) {
     checkMatricule(req.params.matricule, function (result) {
-        res.send({ result : result });
+        res.send({ result: result });
     });
 });
 
@@ -79,30 +104,17 @@ function isNotAuthenticated(req, res, next) {
 
 function addUser(key1, key2, key3, matricule, password, lastName, firstName, callback) {
 
-    checkKey(key1, key2, key3, function (isValid) {
+    let passwordHashed = password;
 
-        if (isValid) {
+    var sql = "INSERT INTO users (matricule, password, last_name, first_name) VALUES ('" + matricule + "', '" + passwordHashed + "', '" + lastName + "', '" + firstName + "')";
 
-            let passwordHashed = password;
+    connection.query(sql, function (err, result) {
 
-            var sql = "INSERT INTO users (matricule, password, last_name, first_name) VALUES ('" + matricule + "', '" + passwordHashed + "', '" + lastName + "', '" + firstName + "')";
+        if (err) throw err;
 
-            connection.query(sql, function (err, result) {
+        removeKey(key1, key2, key3);
 
-                if (err) throw err;
-
-                removeKey(key1, key2, key3);
-
-                callback(true);
-
-            });
-
-        }
-        else {
-
-            callback(false);
-
-        }
+        callback(true);
 
     });
 
@@ -125,7 +137,7 @@ function checkKey(key1, key2, key3, callback) {
 
         if (err) throw err;
 
-        if (result['number'] > 0) {
+        if (result[0]['number'] > 0) {
 
             callback(true);
         }
@@ -186,3 +198,5 @@ function removeKey(key1, key2, key3) {
 
 
 module.exports = router;
+
+

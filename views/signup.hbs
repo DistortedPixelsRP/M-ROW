@@ -14,6 +14,8 @@
 
         <div class="card-body" style="float: center">
 
+            <div class="alert" role="alert" id="alert" style="display: none"></div><br />
+
             <form action="/signup" method="POST">
             
             <label>Clé d'inscription</label>
@@ -44,13 +46,12 @@
 
             <div class="input-group mb-3">
 
-                <input type="number" class="form-control" placeholder="00" maxlength="2" id="matricule" name="matricule">
+                <input type="text" class="form-control" placeholder="00" maxlength="2" id="matricule" name="matricule">
 
                 <div class="input-group-append" id="matriculeButton">
                     <button class="btn btn-outline-secondary" type="button" onclick="verifyMatricule($('#matricule').val())">Vérifier la
                         disponibilité</button>
                 </div>
-                <div class="alert" role="alert" id="disponibilite" style="display: none"></div>
 
             </div>
 
@@ -62,9 +63,9 @@
 
             <div class="input-group mb-3">
 
-                <input type="text" class="form-control" placeholder="Nom" name="nom">
+                <input type="text" class="form-control" placeholder="Nom" name="last_name" id="last_name">
 
-                <input type="text" class="form-control" placeholder="Prénom" name="prenom">
+                <input type="text" class="form-control" placeholder="Prénom" name="first_name" id="first_name">
 
             </div>
 
@@ -72,7 +73,7 @@
 
             <label for="inputPassword5">Mot de passe</label>
 
-            <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock" name="password">
+            <input type="password" id="password" class="form-control" aria-describedby="passwordHelpBlock" name="password">
 
             <small id="passwordHelpBlock" class="form-text text-muted">
                 Le mot de passe doit faire entre 8 et 20 caractères.
@@ -82,13 +83,13 @@
 
             <label for="inputPassword5">Confirmation du mot de passe</label>
 
-            <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock" name="password_confirm">
+            <input type="password" id="password_confirm" class="form-control" aria-describedby="passwordHelpBlock" name="password_confirm">
 
             <br />
 
             <div class="custom-control custom-switch">
 
-                <input type="checkbox" class="custom-control-input" id="customSwitch1" name="accepted_rules">
+                <input type="checkbox" class="custom-control-input" id="accepted_rules" name="accepted_rules">
 
                 <label class="custom-control-label" for="customSwitch1">Oui, j'ai lu <a href="">le réglement intérieur
                         du

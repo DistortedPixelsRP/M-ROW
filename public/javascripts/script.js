@@ -8,7 +8,7 @@ function newKey() {
 
 function removeKeys() {
     $.get("/management/removekeys", function (data) {
-        $("#btnRemoveKeys").after("<div class='alert alert-secondary' role='alert'>"+data.affectedRows+" clef(s) supprimée(s)</div>");
+        $("#btnRemoveKeys").after("<div class='alert alert-secondary' role='alert'>" + data.affectedRows + " clef(s) supprimée(s)</div>");
     });
 }
 
@@ -20,20 +20,30 @@ function removeKeys() {
 // Signup - Start
 
 function verifyMatricule(matricule) {
-    $.get("/signup/checkmatricule/"+matricule, function (data) {
-        if(data.result){
-            $("#disponibilite").html("Ce matricule est disponible !");
-            $("#disponibilite").addClass("alert-primary");
-            $("#disponibilite").removeClass("alert-warning");
-        }
-        else {
-            $("#disponibilite").html("Ce matricule est indisponible !");
-            $("#disponibilite").removeClass("alert-primary");
-            $("#disponibilite").addClass("alert-warning");
-        }
 
-        $("#disponibilite").fadeIn();
-    });
+    if (matricule.length == 2&& !isNaN(matricule) ) {
+        $.get("/signup/checkmatricule/" + matricule, function (data) {
+            if (data.result) {
+                $("#alert").html("Ce matricule est disponible !");
+                $("#alert").addClass("alert-primary");
+                $("#alert").removeClass("alert-warning");
+            }
+            else {
+                $("#alert").html("Ce matricule est indisponible !");
+                $("#alert").removeClass("alert-primary");
+                $("#alert").addClass("alert-warning");
+            }
+
+            $("#alert").fadeIn();
+        });
+    }
+    else {
+        $("#alert").html("Veuillez entrer une valeur correcte.");   
+        $("#alert").removeClass("alert-primary");
+        $("#alert").addClass("alert-warning");
+    }
+
+
 }
 
 // Signup - End
