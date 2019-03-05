@@ -12,6 +12,10 @@ function removeKeys() {
     });
 }
 
+function rankModify(rank, matricule) {
+    $.get("/management/changerank/" + rank + "/" + matricule);
+}
+
 // Management - End
 
 
@@ -21,7 +25,7 @@ function removeKeys() {
 
 function verifyMatricule(matricule) {
 
-    if (matricule.length == 2&& !isNaN(matricule) ) {
+    if (matricule.length == 2 && !isNaN(matricule)) {
         $.get("/signup/checkmatricule/" + matricule, function (data) {
             if (data.result) {
                 $("#alert").html("Ce matricule est disponible !");
@@ -38,7 +42,7 @@ function verifyMatricule(matricule) {
         });
     }
     else {
-        $("#alert").html("Veuillez entrer une valeur correcte.");   
+        $("#alert").html("Veuillez entrer une valeur correcte.");
         $("#alert").removeClass("alert-primary");
         $("#alert").addClass("alert-warning");
     }

@@ -34,7 +34,7 @@ function isAuthenticated(req, res, next) {
 
 function getDirectory(cb) {
 
-    var sql = "SELECT * FROM directory";
+    var sql = "SELECT * FROM directory ORDER BY last_name ASC";
 
     connection.query(sql, function (err, result) {
 

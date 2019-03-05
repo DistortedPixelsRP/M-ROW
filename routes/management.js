@@ -8,13 +8,13 @@ var fs = require('fs');
 
 router.get('/', isAuthenticated, function (req, res, next) {
 
-  getUsers(function(rows){
+  getUsers(function (rows) {
 
     var template = fs.readFileSync('views/agents.hbs', 'utf8');
 
     Handlebars.registerPartial('agentsTable', template);
 
-    res.render('management', {agents:rows});
+    res.render('management', { agents: rows });
 
   });
 
@@ -26,6 +26,22 @@ router.get('/newkey', isAuthenticated, function (req, res, next) {
   createKey(function (key1, key2, key3) {
 
     res.send({ key1: key1, key2: key2, key3: key3 });
+
+  });
+
+});
+
+
+router.get('/changerank/:rank/:matricule', isAuthenticated, function (req, res, next) {
+
+  var rank = req.params.rank;
+  var matricule = req.params.matricule
+
+  var sql = "UPDATE users SET rank = '" + rank + "' WHERE matricule = '" + matricule + "'";
+
+  connection.query(sql, function (err, result) {
+
+    if (err) throw err;
 
   });
 
@@ -54,15 +70,15 @@ function isAuthenticated(req, res, next) {
 }
 
 
-function getUsers(cb){
+function getUsers(cb) {
 
   var sql = "SELECT * FROM users INNER JOIN ranks ON users.rank=ranks.id ORDER BY rank DESC";
 
   connection.query(sql, function (err, result) {
 
-      if (err) throw err;
+    if (err) throw err;
 
-      cb(result);
+    cb(result);
 
   });
 
@@ -78,9 +94,9 @@ function randomString(len, an) {
 
   for (; i++ < len;) {
 
-      var r = Math.random() * (max - min) + min << 0;
+    var r = Math.random() * (max - min) + min << 0;
 
-      str += String.fromCharCode(r += r > 9 ? r < 36 ? 55 : 61 : 48);
+    str += String.fromCharCode(r += r > 9 ? r < 36 ? 55 : 61 : 48);
 
   }
 
@@ -104,9 +120,9 @@ function createKey(callback) {
 
   connection.query(sql, function (err, result) {
 
-      if (err) throw err;
+    if (err) throw err;
 
-      callback(key1, key2, key3);
+    callback(key1, key2, key3);
 
   });
 
@@ -123,9 +139,9 @@ function removeAllKeys(callback) {
 
   connection.query(sql, function (err, result) {
 
-      if (err) throw err;
+    if (err) throw err;
 
-      callback(result.affectedRows);
+    callback(result.affectedRows);
 
   });
 

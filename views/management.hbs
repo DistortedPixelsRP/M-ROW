@@ -113,23 +113,24 @@
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Matricule</button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                                <div role="separator" class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Separated link</a>
-                            </div>
+                            <button class="btn btn-outline-secondary" type="button" id="changeRank"
+                                onclick="rankModify($('#mdfRank option:selected').val(), $('#mdfMatricule').val())">Modifier</button>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect03"
-                            aria-label="Example select with button addon">
-                            <option selected>Rang</option>
+                        <select class="custom-select" id="mdfRank">
+                            <option>Rang</option>
+                            <option value="0">Licencié</option>
                             <option value="1">Cadet</option>
                             <option value="2">Officier</option>
                             <option value="3">Sergent</option>
+                            <option value="4">Sergent-Chef</option>
+                            <option value="5">Lieutenant</option>
+                            <option value="6">Capitaine</option>
+                            <option value="7">Major</option>
+                            <option value="8">Commandant</option>
+                            <option value="9">Directeur</option>
+                            <option value="10">Administrateur</option>
                         </select>
+                        <input type="text" class="form-control" maxlength="2" placeholder="Matricule" id="mdfMatricule">
                     </div>
 
                 </div>
@@ -147,11 +148,13 @@
 
                 <div class="card-body" style="float: center">
 
-                    <button type="button" id="btnNewKey" class="btn btn-primary btn-lg btn-block" onclick="newKey()">Générer
+                    <button type="button" id="btnNewKey" class="btn btn-primary btn-lg btn-block"
+                        onclick="newKey()">Générer
                         une clef
                         d'inscription</button>
 
-                    <button type="button" id="btnRemoveKeys" class="btn btn-secondary btn-lg btn-block" onclick="removeKeys()">Supprimer les clefs existantes</button>
+                    <button type="button" id="btnRemoveKeys" class="btn btn-secondary btn-lg btn-block"
+                        onclick="removeKeys()">Supprimer les clefs existantes</button>
 
                 </div>
 
