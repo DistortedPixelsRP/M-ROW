@@ -150,16 +150,29 @@ app.use(function (err, req, res, next) {
 
 // Gestion du temps réel
 
-io.on('connection', function (socket) {
-  var isConnected = false;
-  if (socket.request.session.user) {
-    isConnected = true;
+var alert_level = "green";
 
+var usersConnected = [];
+
+
+io.on('connection', function (socket) {
+  var hasPermission = false;
+  if (socket.request.session.user) {
+
+    // ajoute a la liste
+    // envoie à tout le monde la nouvelle liste
+
+    if(socket.request.session.user.rank >= 3){
+      hasPermission = true;
+    }
+
+    socket.emit("alert-level", alert_level);
   }
 
   socket.on("alert-level", function (data) {
-    if (isConnected) {
+    if (hasPermission) {
       console.log("Le niveau d'alerte passe à: " + data);
+      alert_level = data;
       io.sockets.emit('alert-level', data);
     }
     else {
@@ -167,7 +180,10 @@ io.on('connection', function (socket) {
     }
   });
 
-
+  socket.on("disconnect", function(){
+    // supprimer de la liste
+    // envoie à tout le monde la nouvelle liste
+  });
 });
 
 

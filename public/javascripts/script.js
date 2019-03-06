@@ -1,6 +1,6 @@
 // Socket IO  - Start
 
-var socket = io('http://localhost:8000');
+var socket = io('http://localhost:8000')
 
 $("#alert_red").on('click', function(){
   socket.emit("alert-level", "red");
