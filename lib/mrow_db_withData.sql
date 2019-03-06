@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 06 Mars 2019 à 10:34
+-- Généré le :  Mer 06 Mars 2019 à 10:33
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -34,6 +34,13 @@ CREATE TABLE `directory` (
   `job` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `directory`
+--
+
+INSERT INTO `directory` (`id`, `phone_number`, `last_name`, `first_name`, `job`) VALUES
+(1, '420-2727', 'Orwell', 'Kyle', 'LSPD');
+
 -- --------------------------------------------------------
 
 --
@@ -44,6 +51,22 @@ CREATE TABLE `ranks` (
   `id` int(11) NOT NULL,
   `rank_name` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `ranks`
+--
+
+INSERT INTO `ranks` (`id`, `rank_name`) VALUES
+(1, 'Cadet'),
+(2, 'Officier'),
+(3, 'Sergent'),
+(4, 'Sergent-Chef'),
+(5, 'Lieutenant'),
+(6, 'Capitaine'),
+(7, 'Major'),
+(8, 'Commandant'),
+(9, 'Directeur'),
+(10, 'Administrateur');
 
 -- --------------------------------------------------------
 
@@ -91,6 +114,13 @@ CREATE TABLE `signup_keys` (
   `key3` varchar(4) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `signup_keys`
+--
+
+INSERT INTO `signup_keys` (`key1`, `key2`, `key3`) VALUES
+('2839', 'YCxl', '9294');
+
 -- --------------------------------------------------------
 
 --
@@ -105,6 +135,16 @@ CREATE TABLE `users` (
   `last_name` varchar(255) DEFAULT NULL,
   `first_name` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `users`
+--
+
+INSERT INTO `users` (`id`, `matricule`, `password`, `rank`, `last_name`, `first_name`) VALUES
+(23, '20', '6607a999607711cd339dce1de6d64425a0985cfd', 10, 'Orwell', 'Kyle'),
+(24, '00', '6607a999607711cd339dce1de6d64425a0985cfd', 9, 'Holt', 'Ray'),
+(25, '08', '6607a999607711cd339dce1de6d64425a0985cfd', 8, 'Harrington', 'William'),
+(27, '50', '1caf85936167fd1471aa94061ffc0f13e3ec57df', 1, 'de Rixensart', 'Ambroise');
 
 --
 -- Index pour les tables exportées

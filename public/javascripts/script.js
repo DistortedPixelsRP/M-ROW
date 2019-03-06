@@ -13,7 +13,18 @@ function removeKeys() {
 }
 
 function rankModify(rank, matricule) {
-    $.get("/management/changerank/" + rank + "/" + matricule);
+    $.get("/management/changerank/" + rank + "/" + matricule, function (data) {
+        if (data.result) {
+            $("#rnkModifyMsg").html("Rang modifé.");
+            $("#rnkModifyMsg").addClass("alert-primary");
+            $("#rnkModifyMsg").removeClass("alert-warning");
+        }
+        else {
+            $("#rnkModifyMsg").html("Le matricule n'est pas utilisé.");
+            $("#rnkModifyMsg").removeClass("alert-primary");
+            $("#rnkModifyMsg").addClass("alert-warning");
+        }
+    });
 }
 
 // Management - End

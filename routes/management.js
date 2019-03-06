@@ -37,11 +37,46 @@ router.get('/changerank/:rank/:matricule', isAuthenticated, function (req, res, 
   var rank = req.params.rank;
   var matricule = req.params.matricule
 
-  var sql = "UPDATE users SET rank = '" + rank + "' WHERE matricule = '" + matricule + "'";
 
-  connection.query(sql, function (err, result) {
 
-    if (err) throw err;
+
+  checkMatricule(matricule, function (valid) {
+
+    if (valid) {
+
+      res.send({ result: true });
+
+      if (rank >= 1 && rank <= 10) {
+
+        var sql = "UPDATE users SET rank = '" + rank + "' WHERE matricule = '" + matricule + "'";
+
+        connection.query(sql, function (err, result) {
+
+          if (err) throw err;
+
+        });
+
+      }
+
+      else if (rank == 0) {
+
+        var sql = "DELETE FROM users WHERE matricule = '"+matricule+"'";
+
+        connection.query(sql, function (err, result) {
+
+          if (err) throw err;
+
+        });
+
+      }
+
+    }
+
+    else {
+
+      res.send({ result: false });
+
+    }
 
   });
 
@@ -123,6 +158,32 @@ function createKey(callback) {
     if (err) throw err;
 
     callback(key1, key2, key3);
+
+  });
+
+}
+
+
+
+// Function checking if a matricule is already used
+
+function checkMatricule(matricule, callback) {
+
+  var sql = "SELECT count(*) AS number FROM users WHERE matricule = '" + matricule + "' ";
+
+  connection.query(sql, function (err, result) {
+
+    if (err) throw err;
+
+    if (parseInt(result[0]['number']) > 0) {
+
+      callback(true);
+    }
+
+    else {
+
+      callback(false);
+    }
 
   });
 
