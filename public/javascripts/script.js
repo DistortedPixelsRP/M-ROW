@@ -24,6 +24,7 @@ function rankModify(rank, matricule) {
             $("#rnkModifyMsg").removeClass("alert-primary");
             $("#rnkModifyMsg").addClass("alert-warning");
         }
+        $("#rnkModifyMsg").fadeIn();
     });
 }
 
