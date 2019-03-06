@@ -1,3 +1,38 @@
+// Socket IO  - Start
+
+var socket = io('http://localhost:8000');
+
+$("#alert_red").on('click', function(){
+  socket.emit("alert-level", "red");
+});
+$("#alert_yellow").on('click', function(){
+  socket.emit("alert-level", "yellow");
+});
+$("#alert_green").on('click', function(){
+  socket.emit("alert-level", "green");
+});
+
+socket.on('alert-level', function(data){
+  if(data == "green"){
+    $("#alert-level").html("Verte");
+    $("#alert-level").css("color", "green");
+    
+  }
+  if(data == "yellow"){
+     $("#alert-level").html("Jaune");
+     $("#alert-level").css("color", "orange");
+  }
+  if(data == "red"){
+     $("#alert-level").html("Rouge");
+     $("#alert-level").css("color", "red");
+  }
+});
+
+// Socket IO - End
+
+
+
+
 // Management - Start
 
 function newKey() {

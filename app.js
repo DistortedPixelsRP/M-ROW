@@ -49,9 +49,11 @@ app.use(sessionMiddleware);
 // socket io 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-io.use(function(socket, next){
+var passportSocketIo = require("passport.socketio");
+io.use(function (socket, next) {
   sessionMiddleware(socket.request, {}, next);
 });
+
 
 server.listen(8000);
 
@@ -150,16 +152,17 @@ app.use(function (err, req, res, next) {
 
 io.on('connection', function (socket) {
   var isConnected = false;
-  if(socket.request.session.user){
+  if (socket.request.session.user) {
     isConnected = true;
+
   }
 
-  socket.on("alert-level", function(data){
-    if(isConnected){
-      console.log("Le niveau d'alerte passe à: "+data);
+  socket.on("alert-level", function (data) {
+    if (isConnected) {
+      console.log("Le niveau d'alerte passe à: " + data);
       io.sockets.emit('alert-level', data);
     }
-    else{
+    else {
       console.log("not connected");
     }
   });

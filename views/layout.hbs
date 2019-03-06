@@ -10,46 +10,16 @@
   <link rel="icon" href="/MROWlogoV1_favicon.ico">
   <title>M-ROW</title>
   <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="/javascripts/bootstrap.min.js"></script>
-  <script src="/javascripts/script.js"></script>
 </head>
 
 <body style="background-color: #D0D0D0">
 
   {{{body}}}
 
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
   <script src="/javascripts/socket.io.js"></script>
-  <script>
-    var socket = io('http://localhost:8000');
-
-    $("#alert_red").on('click', function(){
-      socket.emit("alert-level", "red");
-    });
-    $("#alert_yellow").on('click', function(){
-      socket.emit("alert-level", "yellow");
-    });
-    $("#alert_green").on('click', function(){
-      socket.emit("alert-level", "green");
-    });
-
-    socket.on('alert-level', function(data){
-      if(data == "green"){
-        $("#alert-level").html("Verte");
-        $("#alert-level").css("color", "green");
-      }
-      if(data == "yellow"){
-         $("#alert-level").html("Jaune");
-         $("#alert-level").css("color", "orange");
-      }
-      if(data == "red"){
-         $("#alert-level").html("Rouge");
-         $("#alert-level").css("color", "red");
-      }
-    })
-
-  </script>
+  <script src="/javascripts/script.js"></script>
 
 </body>
 
