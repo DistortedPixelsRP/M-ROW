@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var app = require("../app");
+
 
 
 
 // Redirecting user to the dashboard if he is authenticated
 
 router.get('/', isAuthenticated, function(req, res, next) {
-  
-  res.render('dashboard');
-
+  res.render('dashboard', { user: app.users });
 });
 
 

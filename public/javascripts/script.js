@@ -2,31 +2,54 @@
 
 var socket = io('http://localhost:8000')
 
-$("#alert_red").on('click', function(){
-  socket.emit("alert-level", "red");
+$("#alert_red").on('click', function () {
+    socket.emit("alert-level", "red");
 });
-$("#alert_yellow").on('click', function(){
-  socket.emit("alert-level", "yellow");
+$("#alert_orange").on('click', function () {
+    socket.emit("alert-level", "orange");
 });
-$("#alert_green").on('click', function(){
-  socket.emit("alert-level", "green");
+$("#alert_green").on('click', function () {
+    socket.emit("alert-level", "green");
 });
 
-socket.on('alert-level', function(data){
-  if(data == "green"){
-    $("#alert-level").html("Verte");
-    $("#alert-level").css("color", "green");
-    
-  }
-  if(data == "yellow"){
-     $("#alert-level").html("Jaune");
-     $("#alert-level").css("color", "orange");
-  }
-  if(data == "red"){
-     $("#alert-level").html("Rouge");
-     $("#alert-level").css("color", "red");
-  }
+socket.on('alert-level', function (data) {
+    if (data == "green") {
+        $("#alert-level").html("Verte");
+        $("#alert-level").css("color", "green");
+
+    }
+    if (data == "orange") {
+        $("#alert-level").html("Orange");
+        $("#alert-level").css("color", "orange");
+    }
+    if (data == "red") {
+        $("#alert-level").html("Rouge");
+        $("#alert-level").css("color", "red");
+    }
 });
+
+$("#ordersModify").on('click', function () {
+    var ordersTxt = $("#ordersTextIn").val();
+    socket.emit("orders", ordersTxt);
+});
+
+socket.on('orders', function (data) {
+    $("#ordersText").html(data);
+});
+
+
+$("#startServiceBtn").on('click', function () {
+    socket.emit("service", "En service");
+});
+
+$("#civilServiceBtn").on('click', function () {
+    socket.emit("service", "Service civil");
+});
+
+$("#stopServiceBtn").on('click', function () {
+    socket.emit("service", "Hors-service");
+});
+
 
 // Socket IO - End
 

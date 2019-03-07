@@ -70,7 +70,9 @@ app.use(passport.session());
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/dashboard', dashboard);
+app.use('/dashboard', dashboard, function (connectedUsers) {
+  module.exports.connectedUsers;
+});
 app.use('/management', management);
 app.use('/signup', signup);
 app.use('/database', database);
@@ -151,22 +153,31 @@ app.use(function (err, req, res, next) {
 // Gestion du temps réel
 
 var alert_level = "green";
-
-var usersConnected = [];
-
+var orders = "Il n'y a pas d'ordre actuellement.";
+var connectedUsers = [];
+exports.users = connectedUsers;
+console.log(connectedUsers);
 
 io.on('connection', function (socket) {
   var hasPermission = false;
   if (socket.request.session.user) {
 
-    // ajoute a la liste
-    // envoie à tout le monde la nouvelle liste
+    var user = {
+      matricule: socket.request.session.user.matricule,
+      rank: socket.request.session.user.rank,
+      last_name: socket.request.session.user.last_name,
+      status: 'Hors-service'
+    }
+    connectedUsers.push(user);
+    console.log(connectedUsers);
+    socket.emit("connectedUsers", connectedUsers);
 
-    if(socket.request.session.user.rank >= 3){
+    if (socket.request.session.user.rank >= 3) {
       hasPermission = true;
     }
 
     socket.emit("alert-level", alert_level);
+    socket.emit("orders", orders);
   }
 
   socket.on("alert-level", function (data) {
@@ -176,11 +187,38 @@ io.on('connection', function (socket) {
       io.sockets.emit('alert-level', data);
     }
     else {
-      console.log("not connected");
+      console.log("not connected"); rs
     }
   });
 
-  socket.on("disconnect", function(){
+  socket.on("orders", function (data) {
+    if (hasPermission) {
+      orders = data;
+      io.sockets.emit('orders', data);
+    }
+  });
+
+
+  socket.on("service", function (data) {
+    for (i = 0; i < connectedUsers.length; i++) {
+      if(connectedUsers[i].matricule==socket.request.session.user.matricule) {
+        connectedUsers[i].status = data;
+      }
+    }
+  });
+
+
+  socket.on("disconnect", function () {
+
+    for (i = 0; i < connectedUsers.length; i++) {
+
+      if (connectedUsers[i].matricule == socket.request.session.user.matricule) {
+        connectedUsers.splice(i, 1);
+        console.log(connectedUsers);
+      }
+
+    }
+    //console.log(connectedUsers);
     // supprimer de la liste
     // envoie à tout le monde la nouvelle liste
   });

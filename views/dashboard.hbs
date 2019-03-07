@@ -1,3 +1,51 @@
+<div class="modal fade" id="patrolStartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Débuter une patrouille</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="patrolSelectInput">Patrouille</label>
+                        </div>
+                        <select class="custom-select" id="patrolSelectInput">
+                            <option selected>Type de patrouille</option>
+                            <option value="1">Lincoln</option>
+                            <option value="2">Adam</option>
+                            <option value="3">India</option>
+                            <option value="4">Mike</option>
+                            <option value="5">India</option>
+                            <option value="6">Foxtrot</option>
+                            <option value="7">Dragon</option>
+                            <option value="8">Pégase</option>
+                            <option value="9">Phénix</option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-control" id="pilotTextInput" placeholder="Pilote"> <br />
+                    <input type="text" class="form-control" id="passengersTextInput" placeholder="Passager(s)">
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary">Terminer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 <header style="background-color: #155084">
 
     <h1 style="font-size: 4em">M-ROW</h1>
@@ -80,12 +128,33 @@
 
                 <div class="card-body" style="float: center">
 
-                    <h4 style="text-align: center">Service : <button type="button" class="btn btn-success">En
-                            service</button>
+                    <div class="card">
+                        <div class="card-body">
 
-                        <button type="button" class="btn btn-warning">Service civil</button>
+                            <h4 style="text-align: center">Service : <button type="button" class="btn btn-success" id="startServiceBtn">En
+                                    service</button>
 
-                        <button type="button" class="btn btn-danger">Hors-service</button> </h4>
+                                <button type="button" class="btn btn-warning" id="civilServiceBtn">Service civil</button>
+
+                                <button type="button" class="btn btn-danger" id="stopServiceBtn">Hors-service</button></h4>
+
+                        </div>
+
+                    </div><br />
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <h4 style="text-align: center">Patrouille : <button type="button" class="btn btn-success"
+                                    disabled>En cours</button>
+
+                                <button type="button" class="btn btn-warning" disabled>Suspendue</button>
+
+                                <button type="button" class="btn btn-danger" disabled>Terminée</button></h4>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -104,8 +173,7 @@
 
                     <h3>Niveau d'alerte : <b style="color: green" id="alert-level">Verte</b> </h3>
                     <h4>Ordre du jour :</h4>
-                    <p>
-                        Pan Pan Boum Boum tuez tout le monde
+                    <p id="ordersText">
                     </p>
 
                 </div>
@@ -124,49 +192,43 @@
 
                 <div class="card-body">
 
-                    <table class="table">
+                    <div class="table-responsive">
 
-                        <thead class="thead-dark">
+                        <table class="table">
 
-                            <tr>
-                                <th scope="col">Matricule</th>
+                            <thead class="thead-dark">
 
-                                <th scope="col">Grade</th>
+                                <tr>
+                                    <th scope="col">Matricule</th>
 
-                                <th scope="col">Nom</th>
+                                    <th scope="col">Rang</th>
 
-                                <th scope="col">Statut</th>
+                                    <th scope="col">Nom</th>
 
-                            </tr>
+                                    <th scope="col">Statut</th>
 
-                        </thead>
+                                </tr>
 
-                        <tbody>
+                            </thead>
 
-                            <tr>
-                                <th scope="row">08</th>
-                                <th>Commandant</th>
-                                <th>Harrington</th>
-                                <th style="color: orange">Indisponible</th>
-                            </tr>
+                            <tbody>
 
-                            <tr>
-                                <th scope="row">20</th>
-                                <th>Officier</th>
-                                <th>Orwell</th>
-                                <th style="color: green">En service</th>
-                            </tr>
+                                {{#each user}}
 
-                            <tr>
-                                <th scope="row">50</th>
-                                <th>Sergent-Chef</th>
-                                <th>de Rixensart</th>
-                                <th style="color: red">Hors-service</th>
-                            </tr>
+                                <tr>
+                                    <th>{{matricule}}</th>
+                                    <th>{{rank}}</th>
+                                    <th>{{last_name}}</th>
+                                    <th>{{status}}</th>
+                                </tr>
 
-                        </tbody>
+                                {{/each}}
 
-                    </table>
+                            </tbody>
+
+                        </table>
+
+                    </div>
 
                 </div>
 
@@ -199,25 +261,14 @@
 
                         <tbody>
 
-                            <tr>
-                                <th scope="row">Lincoln</th>
-                                <th>08</th>
-                                <th>/</th>
-                                <th style="color: red">Terminée</th>
-                            </tr>
-
-                            <tr>
-                                <th scope="row">Dragon</th>
-                                <th>20</th>
-                                <th>1 Civil</th>
-                                <th style="color: green">En cours</th>
-                            </tr>
-
                         </tbody>
 
                     </table>
 
-                    <button type="button" class="btn btn-secondary">Débuter une patrouille</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="patrolStart" data-toggle="modal"
+                        data-target="#patrolStartModal">Débuter une patrouille</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="patrolDelete">Supprimer une
+                        patrouille</button>
 
                 </div>
 
