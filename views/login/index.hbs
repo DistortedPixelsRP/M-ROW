@@ -15,16 +15,17 @@
     <div class="card-body" style="float: center">
 
 
-        {{#if message}}
+      {{#if message}}
 
-        <div class="alert alert-warning" role="alert">
-          {{message}}
-        </div>
+      <div class="alert alert-warning" role="alert">
+        {{message}}
+      </div>
 
-        {{/if}}
+      {{/if}}
 
 
       <form class="form-login" method="post" action="/login">
+
         <div class="form-group">
           <label for="username">Matricule</label>
 
@@ -36,22 +37,18 @@
           <input type="password" class="form-control" name="password" placeholder="Mot de passe">
         </div>
 
-        <div class="custom-control custom-switch">
-
-          <input type="checkbox" class="custom-control-input" id="customSwitch1">
-
-          <label class="custom-control-label" for="customSwitch1">Se souvenir de moi</a></label>
-
-        </div>
-
-        <br />
-
         <button type="submit" class="btn btn-primary">Se connecter</button>
+
       </form>
 
 
     </div>
 
+    <div class="card-footer bg-transparent">
+      Pour créer un compte, inscrivez-vous <a href="/signup">ici</a>.
+    </div>
+
   </div>
 
 </div>
+

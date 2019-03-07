@@ -12,6 +12,12 @@ router.get('/', isNotAuthenticated, function (req, res, next) {
 
 });
 
+router.get('/reglement', isNotAuthenticated, function (req, res, next) {
+
+    res.render('internalRulesPublic');
+
+});
+
 
 router.get('/checkmatricule/:matricule', function (req, res, next) {
 
