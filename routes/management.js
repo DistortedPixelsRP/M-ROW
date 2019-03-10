@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var connection = require('../lib/dbconn');
-var Handlebars = require('hbs');
-var fs = require('fs');
+const express = require('express');
+const router = express.Router();
+const connection = require('../lib/dbconn');
+const Handlebars = require('hbs');
+const fs = require('fs');
 
 
 
@@ -10,7 +10,7 @@ router.get('/', isAuthenticated, function (req, res, next) {
 
   getUsers(function (rows) {
 
-    var template = fs.readFileSync('views/agents.hbs', 'utf8');
+    const template = fs.readFileSync('views/agents.hbs', 'utf8');
 
     Handlebars.registerPartial('agentsTable', template);
 
@@ -34,8 +34,8 @@ router.get('/newkey', isAuthenticated, function (req, res, next) {
 
 router.get('/changerank/:rank/:matricule', isAuthenticated, function (req, res, next) {
 
-  var rank = req.params.rank;
-  var matricule = req.params.matricule
+  const rank = req.params.rank;
+  const matricule = req.params.matricule
 
 
 
@@ -107,7 +107,7 @@ function isAuthenticated(req, res, next) {
 
 function getUsers(cb) {
 
-  var sql = "SELECT * FROM users INNER JOIN ranks ON users.rank=ranks.id ORDER BY rank DESC";
+  const sql = "SELECT * FROM users INNER JOIN ranks ON users.rank=ranks.id ORDER BY rank DESC";
 
   connection.query(sql, function (err, result) {
 
@@ -151,7 +151,7 @@ function createKey(callback) {
   var key3 = randomString(4, 'N');
 
 
-  var sql = "INSERT INTO signup_keys (key1, key2, key3) VALUES ('" + key1 + "','" + key2 + "','" + key3 + "')";
+  const sql = "INSERT INTO signup_keys (key1, key2, key3) VALUES ('" + key1 + "','" + key2 + "','" + key3 + "')";
 
   connection.query(sql, function (err, result) {
 
@@ -169,7 +169,7 @@ function createKey(callback) {
 
 function checkMatricule(matricule, callback) {
 
-  var sql = "SELECT count(*) AS number FROM users WHERE matricule = '" + matricule + "' ";
+  const sql = "SELECT count(*) AS number FROM users WHERE matricule = '" + matricule + "' ";
 
   connection.query(sql, function (err, result) {
 
@@ -196,7 +196,7 @@ function checkMatricule(matricule, callback) {
 
 function removeAllKeys(callback) {
 
-  var sql = "DELETE FROM signup_keys";
+  const sql = "DELETE FROM signup_keys";
 
   connection.query(sql, function (err, result) {
 

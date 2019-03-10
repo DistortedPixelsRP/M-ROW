@@ -11,9 +11,9 @@
  * @private
  */
 
-var Store = require('express-session').Store
-var util = require('util')
-var debug = require('debug')('express-session')
+const Store = require('express-session').Store
+const util = require('util')
+const debug = require('debug')('express-session')
 
 /**
  * Shim setImmediate for node.js < 0.10

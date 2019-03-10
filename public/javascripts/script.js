@@ -1,6 +1,6 @@
 // Socket IO  - Start
 
-var socket = io('http://localhost:8000')
+const socket = io('http://localhost:8000')
 
 $("#alert_red").on('click', function () {
     socket.emit("alert-level", "red");
@@ -29,7 +29,7 @@ socket.on('alert-level', function (data) {
 });
 
 $("#ordersModify").on('click', function () {
-    var ordersTxt = $("#ordersTextIn").val();
+    const ordersTxt = $("#ordersTextIn").val();
     socket.emit("orders", ordersTxt);
 });
 

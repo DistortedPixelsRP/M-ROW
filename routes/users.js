@@ -1,13 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 
 
 router.get('/', isAuthenticated, function(req, res, next) {
 
-  var matricule   = req.session.user.matricule;
-  var last_name  = req.session.user.last_name;
-  var first_name  = req.session.user.first_name;
+  const matricule   = req.session.user.matricule;
+  const last_name  = req.session.user.last_name;
+  const first_name  = req.session.user.first_name;
   
   res.render('user', { matricule: matricule, last_name: last_name, first_name: first_name });
 

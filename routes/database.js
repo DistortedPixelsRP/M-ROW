@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var connection = require('../lib/dbconn');
-var Handlebars = require('hbs');
-var fs = require('fs');
+const express = require('express');
+const router = express.Router();
+const connection = require('../lib/dbconn');
+const Handlebars = require('hbs');
+const fs = require('fs');
 
 
 
@@ -10,7 +10,7 @@ router.get('/directory', isAuthenticated, function (req, res, next) {
 
     getDirectory(function (result) {
 
-        var template = fs.readFileSync('views/directoryTable.hbs', 'utf8');
+        const template = fs.readFileSync('views/directoryTable.hbs', 'utf8');
 
         Handlebars.registerPartial('directoryTable', template);
 
@@ -34,7 +34,7 @@ function isAuthenticated(req, res, next) {
 
 function getDirectory(cb) {
 
-    var sql = "SELECT * FROM directory ORDER BY last_name ASC";
+    const sql = "SELECT * FROM directory ORDER BY last_name ASC";
 
     connection.query(sql, function (err, result) {
 

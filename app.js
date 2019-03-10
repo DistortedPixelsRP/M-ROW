@@ -1,20 +1,20 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var dashboard = require('./routes/dashboard');
-var management = require('./routes/management');
-var signup = require('./routes/signup');
-var database = require('./routes/database');
+const index = require('./routes/index');
+const users = require('./routes/users');
+const dashboard = require('./routes/dashboard');
+const management = require('./routes/management');
+const signup = require('./routes/signup');
+const database = require('./routes/database');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,17 +23,17 @@ app.set('view engine', 'hbs');
 
 //login script from here
 
-var flash = require('connect-flash');
-var crypto = require('crypto');
+const flash = require('connect-flash');
+const crypto = require('crypto');
 /* Login script */
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var connection = require('./lib/dbconn');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const connection = require('./lib/dbconn');
 
-var sess = require('express-session');
-var Store = require('express-session').Store
-var BetterMemoryStore = require(__dirname + '/memory')
-var store = new BetterMemoryStore({ expires: 60 * 60 * 1000, debug: true });
+const sess = require('express-session');
+const Store = require('express-session').Store
+const BetterMemoryStore = require(__dirname + '/memory')
+const store = new BetterMemoryStore({ expires: 60 * 60 * 1000, debug: true });
 
 var sessionMiddleware = sess({
   name: 'JSESSION',
@@ -47,9 +47,9 @@ app.use(sessionMiddleware);
 
 
 // socket io 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var passportSocketIo = require("passport.socketio");
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const passportSocketIo = require("passport.socketio");
 io.use(function (socket, next) {
   sessionMiddleware(socket.request, {}, next);
 });
@@ -84,15 +84,15 @@ passport.use('local', new LocalStrategy({
   passReqToCallback: true //passback entire req to call back
 }, function (req, matricule, password, done) {
   if (!matricule || !password) { return done(null, false, req.flash('message', 'Tous les champs ne sont pas remplis')); }
-  var salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
+  const salt = '7fa73b47df808d36c5fe328546ddef8b9011b2c6';
   connection.query("select * from users where matricule = ?", [matricule], function (err, rows) {
     console.log(err);
     if (err) return done(req.flash('message', err));
 
     if (!rows.length) { return done(null, false, req.flash('message', 'Matricule ou mot de passe invalide.')); }
     salt = salt + '' + password;
-    var encPassword = crypto.createHash('sha1').update(salt).digest('hex');
-    var dbPassword = rows[0].password;
+    const encPassword = crypto.createHash('sha1').update(salt).digest('hex');
+    const dbPassword = rows[0].password;
 
     if (!(dbPassword == encPassword)) {
       return done(null, false, req.flash('message', 'Matricule ou mot de passe invalide.'));
@@ -134,7 +134,7 @@ app.get('/logout', function (req, res) {
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -200,7 +200,7 @@ io.on('connection', function (socket) {
 
 
   socket.on("service", function (data) {
-    for (i = 0; i < connectedUsers.length; i++) {
+    for (let i = 0; i < connectedUsers.length; i++) {
       if(connectedUsers[i].matricule==socket.request.session.user.matricule) {
         connectedUsers[i].status = data;
       }
@@ -210,7 +210,7 @@ io.on('connection', function (socket) {
 
   socket.on("disconnect", function () {
 
-    for (i = 0; i < connectedUsers.length; i++) {
+    for (let i = 0; i < connectedUsers.length; i++) {
 
       if (connectedUsers[i].matricule == socket.request.session.user.matricule) {
         connectedUsers.splice(i, 1);
